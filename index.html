@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <header>
+      <h1>SPACE ZOMBIES</h1>
+      <div class="buttons">
+        <button id="new-game-btn">NEW GAME</button>
+        <button id="rules-btn">RULES</button>
+      </div>
+    </header>
+
+    <section class="game">
+      <aside id="panel-p1" class="panel">
+        <h2>PLAYER 1</h2>
+        <img src="./images/player-1.png" alt="player1" />
+        <div class="health">
+          <span id="health-p1">100</span>
+          <p>HEALTH</p>
+        </div>
+        <div class="damage">
+          <img src="./images/weapon-1.png" alt="weapon-1" />
+          <span id="health-p1">10</span>
+          <p>DAMAGE</p>
+        </div>
+        <div class="protection">
+          <img src="./images/shield.png" alt="shield-1" />
+          <span id="protection-p1">PROTECTED</span>
+        </div>
+      </aside>
+
+      <main class="board"></main>
+
+      <aside id="panel-p2" class="panel">
+        <h2>PLAYER 2</h2>
+        <img src="./images/player-2.png" alt="player-2" />
+        <div class="health">
+          <span id="health-p1">100</span>
+          <p>HEALTH</p>
+        </div>
+        <div class="damage">
+          <img src="./images/weapon-2.png" alt="weapon-2" />
+          <span id="health-p1">10</span>
+          <p>DAMAGE</p>
+        </div>
+        <div class="protection">
+          <img src="./images/shield.png" alt="shield-2" />
+          <span id="protection-p1">PROTECTED</span>
+        </div>
+      </aside>
+    </section>
+
+    <div id="rules-modal" class="rules-modal">
+      <div>
+        <h2>Game Rules</h2>
+        <button>&times;</button>
+        <ul>
+          <li>
+            For each turn, a player can move from one to three boxes
+            (horizontally or vertically) before ending their turn.
+          </li>
+          <li>
+            If players cross over adjacent squares (horizontally or vertically),
+            a battle begins.
+          </li>
+          <li>The damage depends on the player's weapon as follows:</li>
+          <div class="modal-images">
+            <div class="modal-img">
+              <img src="./images/weapon-1.png" alt="weapon-1" />
+              <p>30</p>
+            </div>
+            <div class="modal-img">
+              <img src="./images/weapon-2.png" alt="weapon-2" />
+              <p>40</p>
+            </div>
+            <div class="modal-img">
+              <img src="./images/weapon-3.png" alt="weapon-3" />
+              <p>10</p>
+            </div>
+            <div class="modal-img">
+              <img src="./images/weapon-4.png" alt="weapon-4" />
+              <p>20</p>
+            </div>
+          </div>
+          <li>The player choose to attack or defend against the next shot.</li>
+          <li>
+            If the player chooses to defend themselves, they sustain 50% less
+            damage than normal.
+          </li>
+          <li>
+            As soon as the life points of a player (initially 100) falls to 0,
+            they lose.
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <script src="./js/app.js"></script>
+  </body>
+</html>
