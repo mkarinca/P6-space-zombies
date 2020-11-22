@@ -17,7 +17,8 @@ class Player {
       location: { row: 0, column: 0 },
       weapon: {
         damage: 10,
-        image: `<img src="${this.weapon}" />`,
+        image: `<img src="${this.weapon}" data-damage="10" />`,
+        old: null,
       },
     };
   };

@@ -1,4 +1,4 @@
-import { weapon3, weapon4, obstacle, weapon2 } from "./assets";
+import { weapon3, weapon4, obstacle } from "./assets";
 
 class Game {
   constructor(players) {
@@ -35,8 +35,8 @@ class Game {
       this.placeObject(`<img src="${obstacle}" />`, "obstacle");
     }
 
-    this.placeObject(`<img src="${weapon3}" />`, "weapon");
-    this.placeObject(`<img src="${weapon4}" />`, "weapon");
+    this.placeObject(`<img src="${weapon3}" data-damage="20" />`, "weapon");
+    this.placeObject(`<img src="${weapon4}" data-damage="30"  />`, "weapon");
 
     this.currentPlayer = this.players[
       Math.floor(Math.random() * this.players.length)
@@ -100,10 +100,39 @@ class Game {
       `[data-row="${this.currentPlayer.location.row}"][data-column="${this.currentPlayer.location.column}"]`
     );
 
-    const newPos = e.target;
+    const newPos = e.target.nodeName === "IMG" ? e.path[1] : e.target;
 
-    oldPos.innerHTML = "";
+    if (this.currentPlayer.weapon.old) {
+      oldPos.innerHTML = this.currentPlayer.weapon.old;
+      oldPos.classList.add("weapon");
+      this.players[this.currentPlayer.id - 1].weapon.old = null;
+    } else {
+      oldPos.innerHTML = "";
+      oldPos.classList = "";
+    }
+
+    if (newPos.classList.contains("weapon")) {
+      this.players[
+        this.currentPlayer.id - 1
+      ].weapon.old = this.currentPlayer.weapon.image;
+
+      this.players[this.currentPlayer.id - 1].weapon.image = newPos.innerHTML;
+
+      this.players[this.currentPlayer.id - 1].weapon.damage =
+        e.target.dataset.damage;
+
+      document.querySelector(`#weapon-p${this.currentPlayer.id}`).innerHTML =
+        newPos.innerHTML;
+      console.log(newPos.innerHTML, newPos);
+      document.querySelector(`#damage-p${this.currentPlayer.id}`).innerHTML =
+        e.target.dataset.damage;
+
+      let weaponSound = document.querySelector("#weapon-sound");
+      weaponSound.play();
+    }
+
     newPos.innerHTML = this.currentPlayer.avatar;
+    newPos.classList.add("player", "occupied");
 
     this.players[this.currentPlayer.id - 1].location = {
       row: newPos.dataset.row,
@@ -112,6 +141,7 @@ class Game {
 
     for (const tile of document.querySelectorAll(".highlight")) {
       tile.classList.remove("highlight");
+      tile.removeEventListener("click", this.movePlayer);
     }
 
     this.changeTurn();
