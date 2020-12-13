@@ -13,7 +13,6 @@ class Player {
       name: this.name,
       avatar: `<img src="${this.avatar}" />`,
       health: 100,
-      shield: false,
       location: { row: 0, column: 0 },
       weapon: {
         damage: 10,

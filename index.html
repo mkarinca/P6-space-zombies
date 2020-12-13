@@ -24,19 +24,19 @@
         <h2>PLAYER 1</h2>
         <img src="./images/player-1.png" alt="player1" />
         <div class="health">
-          <span id="health-p1">100</span>
+          <span id="health-p1">0</span>
           <p>HEALTH</p>
         </div>
         <div class="damage">
           <span id="weapon-p1"
             ><img src="./images/weapon-1.png" alt="weapon-1"
           /></span>
-          <span id="damage-p1">10</span>
+          <span id="damage-p1">0</span>
           <p>DAMAGE</p>
         </div>
         <div class="protection">
           <img src="./images/shield.png" alt="shield-1" />
-          <span id="protection-p1">PROTECTED</span>
+          <span id="protection-p1">UNPROTECTED</span>
         </div>
 
         <audio id="weapon-sound" src="./sounds/weapon.mp3"></audio>
@@ -48,24 +48,24 @@
         <h2>PLAYER 2</h2>
         <img src="./images/player-2.png" alt="player-2" />
         <div class="health">
-          <span id="health-p2">100</span>
+          <span id="health-p2">0</span>
           <p>HEALTH</p>
         </div>
         <div class="damage">
           <span id="weapon-p2"
             ><img src="./images/weapon-2.png" alt="weapon-2"
           /></span>
-          <span id="damage-p2">10</span>
+          <span id="damage-p2">0</span>
           <p>DAMAGE</p>
         </div>
         <div class="protection">
           <img src="./images/shield.png" alt="shield-2" />
-          <span id="protection-p2">PROTECTED</span>
+          <span id="protection-p2">UNPROTECTED</span>
         </div>
       </aside>
     </section>
 
-    <div id="rules-modal" class="rules-modal">
+    <div id="rules-modal" class="modal">
       <div>
         <h2>Game Rules</h2>
         <button>&times;</button>
@@ -107,6 +107,26 @@
             they lose.
           </li>
         </ul>
+      </div>
+    </div>
+
+    <div id="fight-modal" class="modal">
+      <div>
+        <div id="avatar"></div>
+        <h2>You're in a fight</h2>
+        <p><strong>Protect: </strong>you are going to receive a 50% attack</p>
+        <p><strong>Attack: </strong>you are going to receive a full damage</p>
+        <button id="protect">Protect</button>
+        <button id="attack">Attack</button>
+      </div>
+    </div>
+
+    <div id="gameover-modal" class="modal">
+      <div>
+        <h2>Game Over!</h2>
+        <p></p>
+        <p></p>
+        <button id="newGame">New Game</button>
       </div>
     </div>
 

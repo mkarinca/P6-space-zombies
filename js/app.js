@@ -11,20 +11,13 @@ const game = new Game([playerOne, playerTwo]);
 
 //Pop-up Rules Modal Window
 const rulesBtn = document.querySelector("#rules-btn");
+const rulesClose = document.querySelector("#rules-modal button");
 
-rulesBtn.addEventListener("click", () => {
-  const modal = document.querySelector("#rules-modal");
-  modal.style.display = "flex";
-  modal.classList.remove("fade-out");
-  modal.classList.add("fade-in");
-  document
-    .querySelector("#rules-modal button")
-    .addEventListener("click", () => {
-      modal.classList.remove("fade-in");
-      modal.classList.add("fade-out");
-      setTimeout(() => {
-        modal.style.display = "none";
-      }, 700);
-    });
-});
+rulesBtn.addEventListener("click", () =>
+  document.querySelector("#rules-modal").classList.add("open")
+);
+rulesClose.addEventListener("click", () =>
+  document.querySelector("#rules-modal").classList.remove("open")
+);
+
 document.querySelector("#new-game-btn").addEventListener("click", game.new);

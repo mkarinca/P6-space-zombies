@@ -95,7 +95,6 @@ class Game {
   };
 
   movePlayer = (e) => {
-    console.log(e);
     const oldPos = document.querySelector(
       `[data-row="${this.currentPlayer.location.row}"][data-column="${this.currentPlayer.location.column}"]`
     );
@@ -123,7 +122,7 @@ class Game {
 
       document.querySelector(`#weapon-p${this.currentPlayer.id}`).innerHTML =
         newPos.innerHTML;
-      console.log(newPos.innerHTML, newPos);
+
       document.querySelector(`#damage-p${this.currentPlayer.id}`).innerHTML =
         e.target.dataset.damage;
 
@@ -144,7 +143,117 @@ class Game {
       tile.removeEventListener("click", this.movePlayer);
     }
 
-    this.changeTurn();
+    if (this.detectFight()) {
+      this.retaliation();
+    } else {
+      this.changeTurn();
+    }
+  };
+
+  detectFight = () => {
+    const row = Number(this.currentPlayer.location.row);
+    const column = Number(this.currentPlayer.location.column);
+
+    const north = document.querySelector(
+      `[data-row="${row - 1}"][data-column="${column}"]`
+    );
+
+    const south = document.querySelector(
+      `[data-row="${row + 1}"][data-column="${column}"]`
+    );
+
+    const east = document.querySelector(
+      `[data-row="${row}"][data-column="${column + 1}"]`
+    );
+
+    const west = document.querySelector(
+      `[data-row="${row}"][data-column="${column - 1}"]`
+    );
+
+    if (north && north.classList.contains("player")) return true;
+    if (south && south.classList.contains("player")) return true;
+    if (east && east.classList.contains("player")) return true;
+    if (west && west.classList.contains("player")) return true;
+  };
+
+  retaliation = () => {
+    const attacker = this.currentPlayer;
+    this.currentPlayer = attacker.id === 1 ? this.players[1] : this.players[0];
+    const opponent = this.currentPlayer;
+
+    document
+      .querySelector(`#panel-p${attacker.id}`)
+      .classList.remove("current");
+    document.querySelector(`#panel-p${opponent.id}`).classList.add("current");
+
+    // 1. Display modal window with attack information
+    const fightModal = document.querySelector("#fight-modal");
+    document.querySelector("#avatar").innerHTML = opponent.avatar;
+
+    setTimeout(() => {
+      fightModal.classList.add("open");
+    }, 500);
+
+    document.querySelector("#protect").addEventListener(
+      "click",
+      () => {
+        fightModal.classList.remove("open");
+
+        const health = opponent.health - attacker.weapon.damage / 2;
+        document.querySelector(`#health-p${opponent.id}`).innerHTML = health;
+        this.players[opponent.id - 1].health = health;
+        const protection = document.querySelector(
+          `#protection-p${opponent.id}`
+        );
+        protection.innerHTML = "PROTECTED";
+        protection.classList.add("protecting");
+
+        if (this.gameOver(attacker, opponent)) return;
+
+        this.showPlayerMoves();
+      },
+      { once: true }
+    );
+
+    document.querySelector("#attack").addEventListener(
+      "click",
+      () => {
+        fightModal.classList.remove("open");
+
+        const health = opponent.health - attacker.weapon.damage;
+        document.querySelector(`#health-p${opponent.id}`).innerHTML = health;
+        this.players[opponent.id - 1].health = health;
+        const protection = document.querySelector(
+          `#protection-p${opponent.id}`
+        );
+        protection.innerHTML = "UNPROTECTED";
+        protection.classList.remove("protecting");
+
+        if (this.gameOver(attacker, opponent)) return;
+
+        this.retaliation();
+      },
+      { once: true }
+    );
+
+    // 2. Update player panels and objects. Check for shield status
+
+    // 3.
+  };
+
+  gameOver = (attacker, opponent) => {
+    if (this.players[opponent.id - 1].health <= 0) {
+      const gameOverModal = document.querySelector("#gameover-modal");
+      gameOverModal.classList.add("open");
+      document.querySelector(
+        "#gameover-modal p:first-of-type"
+      ).innerHTML = `${attacker.name}, you are the winner! :)`;
+      document.querySelector(
+        "#gameover-modal p:last-of-type"
+      ).innerHTML = `${opponent.name}, you are the loser! :(`;
+
+      return true;
+    }
   };
 
   showPlayerMoves = () => {
