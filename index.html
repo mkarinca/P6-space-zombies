@@ -14,10 +14,12 @@
     <header>
       <h1>SPACE ZOMBIES</h1>
       <div class="buttons">
-        <button id="new-game-btn">NEW GAME</button>
-        <button id="rules-btn">RULES</button>
+        <button class="new-game">NEW GAME</button>
+        <button class="rules-btn">RULES</button>
       </div>
     </header>
+
+    <!--Player 1 Aside Panel-->
 
     <section class="game">
       <aside id="panel-p1" class="panel">
@@ -29,7 +31,7 @@
         </div>
         <div class="damage">
           <span id="weapon-p1"
-            ><img src="./images/weapon-1.png" alt="weapon-1"
+            ><img src="./images/weapon-3.png" alt="weapon-3"
           /></span>
           <span id="damage-p1">0</span>
           <p>DAMAGE</p>
@@ -38,11 +40,13 @@
           <img src="./images/shield.png" alt="shield-1" />
           <span id="protection-p1">UNPROTECTED</span>
         </div>
-
-        <audio id="weapon-sound" src="./sounds/weapon.mp3"></audio>
       </aside>
 
+      <!--Game Board-->
+
       <main class="board"></main>
+
+      <!--Player 2 Aside Panel-->
 
       <aside id="panel-p2" class="panel">
         <h2>PLAYER 2</h2>
@@ -53,7 +57,7 @@
         </div>
         <div class="damage">
           <span id="weapon-p2"
-            ><img src="./images/weapon-2.png" alt="weapon-2"
+            ><img src="./images/weapon-4.png" alt="weapon-4"
           /></span>
           <span id="damage-p2">0</span>
           <p>DAMAGE</p>
@@ -64,6 +68,8 @@
         </div>
       </aside>
     </section>
+
+    <!--Rules Modal Window-->
 
     <div id="rules-modal" class="modal">
       <div>
@@ -94,7 +100,7 @@
             </div>
             <div class="modal-img">
               <img src="./images/weapon-4.png" alt="weapon-4" />
-              <p>20</p>
+              <p>10</p>
             </div>
           </div>
           <li>The player choose to attack or defend against the next shot.</li>
@@ -110,26 +116,31 @@
       </div>
     </div>
 
+    <!--Fight Modal Window-->
+
     <div id="fight-modal" class="modal">
       <div>
         <div id="avatar"></div>
         <h2>You're in a fight</h2>
-        <p><strong>Protect: </strong>you are going to receive a 50% attack</p>
-        <p><strong>Attack: </strong>you are going to receive a full damage</p>
+        <p><strong>Protect </strong>(You are going to receive a 50% attack)</p>
+        <p><strong>Attack </strong>(You are going to receive a full damage)</p>
         <button id="protect">Protect</button>
         <button id="attack">Attack</button>
       </div>
     </div>
+
+    <!--Gameover Modal Window-->
 
     <div id="gameover-modal" class="modal">
       <div>
         <h2>Game Over!</h2>
         <p></p>
         <p></p>
-        <button id="newGame">New Game</button>
+        <button class="new-game">New Game</button>
       </div>
     </div>
 
+    <audio id="weapon-sound" src="./sounds/weapon.mp3"></audio>
     <script src="./js/app.js"></script>
   </body>
 </html>

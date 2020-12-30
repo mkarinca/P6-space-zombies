@@ -1,7 +1,8 @@
 let playerId = 1;
 
 class Player {
-  constructor(name, avatar, weapon) {
+  constructor(id, name, avatar, weapon) {
+    this.id = id;
     this.name = name;
     this.avatar = avatar;
     this.weapon = weapon;
@@ -9,7 +10,7 @@ class Player {
 
   generate = () => {
     return {
-      id: playerId++,
+      id: this.id,
       name: this.name,
       avatar: `<img src="${this.avatar}" />`,
       health: 100,

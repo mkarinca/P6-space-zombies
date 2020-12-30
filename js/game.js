@@ -1,4 +1,4 @@
-import { weapon3, weapon4, obstacle } from "./assets";
+import { weapon1, weapon2, obstacle } from "./assets";
 
 class Game {
   constructor(players) {
@@ -11,9 +11,11 @@ class Game {
     let column = 0;
     let row = 1;
 
+    let output = "";
+
     for (let i = 0; i < 81; i++) {
       column++;
-      document.querySelector(".board").innerHTML += `<div id="tile-${
+      output += `<div id="tile-${
         i + 1
       }"  data-row="${row}"  data-column="${column}"></div>`;
 
@@ -22,10 +24,16 @@ class Game {
         row++;
       }
     }
+
+    document.querySelector(".board").innerHTML = output;
   };
+
+  //Creating New Game
 
   new = () => {
     this.reset();
+
+    document.querySelector("#gameover-modal").classList.remove("open");
 
     this.players.map((player) => {
       this.placeObject(player, "player");
@@ -35,8 +43,8 @@ class Game {
       this.placeObject(`<img src="${obstacle}" />`, "obstacle");
     }
 
-    this.placeObject(`<img src="${weapon3}" data-damage="20" />`, "weapon");
-    this.placeObject(`<img src="${weapon4}" data-damage="30"  />`, "weapon");
+    this.placeObject(`<img src="${weapon1}" data-damage="20" />`, "weapon");
+    this.placeObject(`<img src="${weapon2}" data-damage="30"  />`, "weapon");
 
     this.currentPlayer = this.players[
       Math.floor(Math.random() * this.players.length)
@@ -45,15 +53,34 @@ class Game {
     this.detectTurn();
   };
 
+  //Reset Game
+
   reset = () => {
-    for (const tile of this.tiles) {
-      tile.innerHTML = "";
-      tile.removeAttribute("class");
-    }
+    // for (const tile of this.tiles) {
+    //   tile.innerHTML = "";
+    //   tile.removeAttribute("class");
+    // }
+
+    this.players.map((player) => {
+      const protection = document.querySelector(`#protection-p${player.id}`);
+
+      protection.innerHTML = "UNPROTECTED";
+      protection.classList.remove("protecting");
+
+      document.querySelector(`#panel-p${player.id} h2`).innerHTML = player.name;
+      document.querySelector(`#health-p${player.id}`).innerHTML = player.health;
+      document.querySelector(`#damage-p${player.id}`).innerHTML =
+        player.weapon.damage;
+      document.querySelector(`#weapon-p${player.id}`).innerHTML =
+        player.weapon.image;
+    });
   };
+
+  //Place Players and Weapons on Tiles
 
   placeObject = (item, type) => {
     const randomTile = Math.floor(Math.random() * this.tiles.length);
+
     if (this.tiles[randomTile].classList.contains("occupied")) {
       this.placeObject(item, type);
     } else {
@@ -72,6 +99,8 @@ class Game {
     }
   };
 
+  //Detect Player Turn
+
   detectTurn = () => {
     for (const panel of document.querySelectorAll(".panel")) {
       panel.classList.remove("current");
@@ -84,6 +113,8 @@ class Game {
     this.showPlayerMoves();
   };
 
+  //Change Player Turn
+
   changeTurn = () => {
     if (this.currentPlayer.id === 1) {
       this.currentPlayer = this.players[1];
@@ -93,6 +124,8 @@ class Game {
 
     this.detectTurn();
   };
+
+  // Player Moves
 
   movePlayer = (e) => {
     const oldPos = document.querySelector(
@@ -104,6 +137,7 @@ class Game {
     if (this.currentPlayer.weapon.old) {
       oldPos.innerHTML = this.currentPlayer.weapon.old;
       oldPos.classList.add("weapon");
+      oldPos.classList.remove("player");
       this.players[this.currentPlayer.id - 1].weapon.old = null;
     } else {
       oldPos.innerHTML = "";
@@ -150,6 +184,8 @@ class Game {
     }
   };
 
+  // Detect Fight
+
   detectFight = () => {
     const row = Number(this.currentPlayer.location.row);
     const column = Number(this.currentPlayer.location.column);
@@ -194,60 +230,61 @@ class Game {
       fightModal.classList.add("open");
     }, 500);
 
-    document.querySelector("#protect").addEventListener(
-      "click",
-      () => {
-        fightModal.classList.remove("open");
+    const attack = () => {
+      document.querySelector("#protect").removeEventListener("click", protect);
 
-        const health = opponent.health - attacker.weapon.damage / 2;
-        document.querySelector(`#health-p${opponent.id}`).innerHTML = health;
-        this.players[opponent.id - 1].health = health;
-        const protection = document.querySelector(
-          `#protection-p${opponent.id}`
-        );
-        protection.innerHTML = "PROTECTED";
-        protection.classList.add("protecting");
+      fightModal.classList.remove("open");
 
-        if (this.gameOver(attacker, opponent)) return;
+      const health = opponent.health - attacker.weapon.damage;
+      document.querySelector(`#health-p${opponent.id}`).innerHTML = health;
+      this.players[opponent.id - 1].health = health;
+      const protection = document.querySelector(`#protection-p${opponent.id}`);
+      protection.innerHTML = "UNPROTECTED";
+      protection.classList.remove("protecting");
 
-        this.showPlayerMoves();
-      },
-      { once: true }
-    );
+      if (this.gameOver(attacker, opponent)) return;
 
-    document.querySelector("#attack").addEventListener(
-      "click",
-      () => {
-        fightModal.classList.remove("open");
+      this.retaliation();
+    };
 
-        const health = opponent.health - attacker.weapon.damage;
-        document.querySelector(`#health-p${opponent.id}`).innerHTML = health;
-        this.players[opponent.id - 1].health = health;
-        const protection = document.querySelector(
-          `#protection-p${opponent.id}`
-        );
-        protection.innerHTML = "UNPROTECTED";
-        protection.classList.remove("protecting");
+    const protect = () => {
+      document.querySelector("#attack").removeEventListener("click", attack);
 
-        if (this.gameOver(attacker, opponent)) return;
+      fightModal.classList.remove("open");
 
-        this.retaliation();
-      },
-      { once: true }
-    );
+      const health = opponent.health - attacker.weapon.damage / 2;
+      document.querySelector(`#health-p${opponent.id}`).innerHTML = health;
+      this.players[opponent.id - 1].health = health;
+      const protection = document.querySelector(`#protection-p${opponent.id}`);
+      protection.innerHTML = "PROTECTED";
+      protection.classList.add("protecting");
 
-    // 2. Update player panels and objects. Check for shield status
+      if (this.gameOver(attacker, opponent)) return;
 
-    // 3.
+      this.showPlayerMoves();
+    };
+
+    document
+      .querySelector("#protect")
+      .addEventListener("click", protect, { once: true });
+
+    document
+      .querySelector("#attack")
+      .addEventListener("click", attack, { once: true });
   };
+
+  //Game Over Case
 
   gameOver = (attacker, opponent) => {
     if (this.players[opponent.id - 1].health <= 0) {
       const gameOverModal = document.querySelector("#gameover-modal");
+
       gameOverModal.classList.add("open");
+
       document.querySelector(
         "#gameover-modal p:first-of-type"
       ).innerHTML = `${attacker.name}, you are the winner! :)`;
+
       document.querySelector(
         "#gameover-modal p:last-of-type"
       ).innerHTML = `${opponent.name}, you are the loser! :(`;
@@ -255,6 +292,8 @@ class Game {
       return true;
     }
   };
+
+  //Highlight Player Moves
 
   showPlayerMoves = () => {
     const row = Number(this.currentPlayer.location.row);
