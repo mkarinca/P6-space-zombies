@@ -2,29 +2,23 @@ import Player from "./player";
 import { player1, player2, weapon3, weapon4 } from "./assets";
 import Game from "./game";
 
+//Create board tiles on start up(even if new game button not be clicked)
 Game.createBoard();
 
+//Create game board
 const newGame = () => {
-  const playerOne = new Player(1, "Player 1", player1, weapon3).generate();
-  const playerTwo = new Player(2, "Player 2", player2, weapon4).generate();
+  const playerOne = new Player(1, "Rick", player1, weapon3).generate();
+  const playerTwo = new Player(2, "Lori", player2, weapon4).generate();
 
   Game.createBoard();
 
   new Game([playerOne, playerTwo]).new();
 };
 
-//Pop-up Rules Modal Window
-const rulesBtn = document.querySelector(".rules-btn");
-const rulesClose = document.querySelector("#rules-modal button");
+//Rules Modal Window
+$(".rules-btn").click(() => $("#rules-modal").addClass("open"));
+$("#rules-modal button").click(() => $("#rules-modal").removeClass("open"));
 
-rulesBtn.addEventListener("click", () =>
-  document.querySelector("#rules-modal").classList.add("open")
-);
-rulesClose.addEventListener("click", () =>
-  document.querySelector("#rules-modal").classList.remove("open")
-);
-
-document.querySelector(".new-game").addEventListener("click", newGame);
-document
-  .querySelector("#gameover-modal button")
-  .addEventListener("click", newGame);
+//Call New game function when click on new game button on startup and gameover modal.
+$(".new-game").click(newGame);
+$("#gameover-modal button").click(newGame);

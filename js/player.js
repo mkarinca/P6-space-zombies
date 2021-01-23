@@ -1,5 +1,3 @@
-let playerId = 1;
-
 class Player {
   constructor(id, name, avatar, weapon) {
     this.id = id;

@@ -122,10 +122,17 @@
       <div>
         <div id="avatar"></div>
         <h2>You're in a fight</h2>
+        <p>
+          <strong>Protect & Run </strong>(You are going to receive a 50% attack
+          and run)
+        </p>
         <p><strong>Protect </strong>(You are going to receive a 50% attack)</p>
         <p><strong>Attack </strong>(You are going to receive a full damage)</p>
-        <button id="protect">Protect</button>
-        <button id="attack">Attack</button>
+        <div class="buttons">
+          <button id="run">Protect & Run</button>
+          <button id="protect">Protect</button>
+          <button id="attack">Attack</button>
+        </div>
       </div>
     </div>
 
@@ -141,6 +148,11 @@
     </div>
 
     <audio id="weapon-sound" src="./sounds/weapon.mp3"></audio>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+      integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
+      crossorigin="anonymous"
+    ></script>
     <script src="./js/app.js"></script>
   </body>
 </html>
